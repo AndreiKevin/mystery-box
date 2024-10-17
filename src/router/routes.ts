@@ -1,21 +1,27 @@
-import { RouteRecordRaw } from "vue-router";
+import type { RouteRecordRaw } from "vue-router";
 
 const routes: RouteRecordRaw[] = [
 	{
-		path: "/:catchAll(.*)*",
-		component: () => import("pages/ErrorNotFound.vue"),
-	},
-	{
 		path: "/",
-		redirect: "/marketplace",
 		component: () => import("@/components/layout/MainLayout.vue"),
 		children: [
+			{
+				path: "",
+				redirect: "/marketplace",
+			},
 			{
 				path: "marketplace",
 				name: "Marketplace",
 				component: () => import("@/pages/Marketplace.vue"),
 				meta: { requiresAuth: true },
 			},
+			// Add other authenticated routes here
+			/**
+			 *  a route a child of another route has specific implications:
+				Child routes are rendered inside their parent component's <router-view> element.
+				They inherit the path of their parent (so "marketplace" becomes "/marketplace").
+				They share the parent's component (in this case, MainLayout.vue).
+			 */
 		],
 	},
 	{
@@ -29,6 +35,10 @@ const routes: RouteRecordRaw[] = [
 		name: "Register",
 		component: () => import("@/pages/Register.vue"),
 		meta: { guest: true },
+	},
+	{
+		path: "/:catchAll(.*)*",
+		component: () => import("pages/ErrorNotFound.vue"),
 	},
 ];
 
