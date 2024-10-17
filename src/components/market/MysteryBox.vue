@@ -49,6 +49,7 @@ const loading = ref(false);
 const showResult = ref(false);
 const resultTreasure = ref<Treasure | null>(null);
 
+// make sure to track if more mystery boxes (this can happen if Marketplace.vue refetches api)
 const mysteryBoxes = computed(() => marketStore.mysteryBoxes);
 
 const canPurchase = (box: MysteryBox) => authStore.userCredits >= box.price;
