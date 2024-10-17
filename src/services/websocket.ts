@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { io, Socket } from "socket.io-client";
+import { io, type Socket } from "socket.io-client";
 import { useMarketStore } from "@/stores/market";
 import { useAuthStore } from "@/stores/auth";
 
@@ -44,7 +44,7 @@ export function useWebSocket() {
 			setTimeout(() => {
 				reconnectAttempts.value++;
 				connect();
-			}, reconnectDelay * Math.pow(2, reconnectAttempts.value));
+			}, reconnectDelay * 2 ** reconnectAttempts.value);
 		}
 	}
 
