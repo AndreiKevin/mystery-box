@@ -16,15 +16,11 @@
     </q-layout>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import LoginForm from '@/components/auth/LoginForm.vue';
-import { defineComponent } from 'vue';
 
-export default defineComponent({
-    name: 'LoginPage',
-    components: {
-        LoginForm,
-    },
+defineOptions({
+    name: 'LoginPage'
 });
 </script>
 
