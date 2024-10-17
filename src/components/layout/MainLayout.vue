@@ -53,36 +53,25 @@
     </q-layout>
 </template>
 
-<script>
-import { defineComponent, ref, computed } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
-export default defineComponent({
-    name: 'MainLayout',
+const leftDrawerOpen = ref(false)
+const authStore = useAuthStore()
 
-    setup() {
-        const store = useStore()
+const userCredits = computed(() => authStore.userCredits)
+
+function toggleLeftDrawer() {
+    leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+function logout() {
+    authStore.logout()
+    // Use router from vue-router to navigate
+    import('vue-router').then(({ useRouter }) => {
         const router = useRouter()
-        const leftDrawerOpen = ref(false)
-
-        const userCredits = computed(() => store.state.auth.user.credits)
-
-        const toggleLeftDrawer = () => {
-            leftDrawerOpen.value = !leftDrawerOpen.value
-        }
-
-        const logout = async () => {
-            await store.dispatch('auth/logout')
-            router.push('/login')
-        }
-
-        return {
-            leftDrawerOpen,
-            userCredits,
-            toggleLeftDrawer,
-            logout
-        }
-    }
-})
+        router.push('/login')
+    })
+}
 </script>
