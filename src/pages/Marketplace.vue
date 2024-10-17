@@ -18,39 +18,28 @@
     </q-page>
 </template>
 
-<script>
-import { defineComponent, onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useMarketStore } from '@/stores/market'
 import MysteryBox from '@/components/market/MysteryBox.vue'
 import TreasureGrid from '@/components/market/TreasureGrid.vue'
 
-export default defineComponent({
-    name: 'MarketplacePage',
+const marketStore = useMarketStore()
+const loading = ref(false)
 
-    components: {
-        MysteryBox,
-        TreasureGrid
-    },
-
-    setup() {
-        const store = useStore()
-        const loading = ref(false)
-
-        const refreshInventory = async () => {
-            loading.value = true
-            try {
-                await store.dispatch('market/fetchInventory')
-            } finally {
-                loading.value = false
-            }
-        }
-
-        onMounted(refreshInventory)
-
-        return {
-            loading,
-            refreshInventory
-        }
+const refreshInventory = async () => {
+    loading.value = true
+    try {
+        await marketStore.fetchInventory()
+        await marketStore.fetchMysteryBoxes()
+    } finally {
+        loading.value = false
     }
+}
+
+onMounted(refreshInventory)
+
+defineOptions({
+    name: 'MarketplacePage'
 })
 </script>
