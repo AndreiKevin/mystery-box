@@ -20,30 +20,19 @@
     </div>
 </template>
 
-<script>
-import { defineComponent, computed } from 'vue'
-import { useStore } from 'vuex'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useMarketStore } from '@/stores/market'
 
-export default defineComponent({
-    name: 'TreasureGrid',
+const marketStore = useMarketStore()
 
-    setup() {
-        const store = useStore()
+const treasures = computed(() => marketStore.treasures)
 
-        const treasures = computed(() => store.state.market.treasures)
-
-        const getProgressColor = (ratio) => {
-            if (ratio > 0.6) return 'positive'
-            if (ratio > 0.3) return 'warning'
-            return 'negative'
-        }
-
-        return {
-            treasures,
-            getProgressColor
-        }
-    }
-})
+const getProgressColor = (ratio: number) => {
+    if (ratio > 0.6) return 'positive'
+    if (ratio > 0.3) return 'warning'
+    return 'negative'
+}
 </script>
 
 <style lang="scss" scoped>
