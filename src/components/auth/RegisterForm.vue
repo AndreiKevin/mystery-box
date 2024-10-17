@@ -22,6 +22,10 @@
             val => val === form.password || 'Passwords do not match'
         ]" outlined />
 
+        <q-input v-model="form.referralCode" label="Referral Code" :rules="[
+            val => !val || val.length === 6 || 'Referral code must be 6 characters long'
+        ]" outlined />
+
         <div class="full-width q-mt-md">
             <q-btn label="Register" type="submit" color="primary" class="full-width" :loading="loading" />
         </div>
@@ -52,7 +56,8 @@ export default defineComponent({
             username: '',
             email: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            referralCode: ''
         })
 
         const handleSubmit = async () => {
@@ -69,7 +74,8 @@ export default defineComponent({
                 await authStore.register({
                     username: form.value.username,
                     email: form.value.email,
-                    password: form.value.password
+                    password: form.value.password,
+                    referralCode: form.value.referralCode
                 })
                 router.push('/marketplace')
             } catch (error) {
