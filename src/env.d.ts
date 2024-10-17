@@ -9,8 +9,8 @@ declare namespace NodeJS {
 }
 
 interface ImportMetaEnv {
-	readonly VITE_API_URL: string;
-	readonly VITE_WS_URL: string;
+	readonly BACKEND_API_URL: string;
+	readonly BACKEND_WS_URL: string;
 }
 
 interface ImportMeta {

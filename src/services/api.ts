@@ -3,7 +3,7 @@ import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 
 export const api: AxiosInstance = axios.create({
-	baseURL: import.meta.env.VITE_API_URL,
+	baseURL: import.meta.env.BACKEND_API_URL,
 	timeout: 10000,
 	headers: {
 		"Content-Type": "application/json",
