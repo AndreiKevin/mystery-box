@@ -1,29 +1,39 @@
-export interface Treasure {
-	id: number;
-	type: string;
-	name: string;
-	description: string;
-	remaining: number;
-	total: number;
-	imageUrl: string;
-}
+import { z } from 'zod';
 
-export interface MysteryBox {
-	id: number;
-	name: string;
-	price: number;
-	imageUrl: string;
-}
+export const TreasureValidator = z.object({
+	id: z.number(),
+	type: z.string(),
+	name: z.string(),
+	description: z.string(),
+	remaining: z.number(),
+	total: z.number(),
+	imageUrl: z.string().url(),
+});
 
-export interface PurchaseResult {
-	purchaseId: number;
-	treasureReceived: Treasure;
-	remainingCredits: number;
-}
+export type Treasure = z.infer<typeof TreasureValidator>;
 
-export interface MarketState {
-	treasures: Treasure[];
-	mysteryBoxes: MysteryBox[];
-	loading: boolean;
-	error: string | null;
-}
+export const MysteryBoxValidator = z.object({
+	id: z.number(),
+	name: z.string(),
+	price: z.number(),
+	imageUrl: z.string().url(),
+});
+
+export type MysteryBox = z.infer<typeof MysteryBoxValidator>;
+
+export const PurchaseResultValidator = z.object({
+	purchaseId: z.number(),
+	treasureReceived: TreasureValidator,
+	remainingCredits: z.number(),
+});
+
+export type PurchaseResult = z.infer<typeof PurchaseResultValidator>;
+
+export const MarketStateValidator = z.object({
+	treasures: z.array(TreasureValidator),
+	mysteryBoxes: z.array(MysteryBoxValidator),
+	loading: z.boolean(),
+	error: z.string().nullable(),
+});
+
+export type MarketState = z.infer<typeof MarketStateValidator>;

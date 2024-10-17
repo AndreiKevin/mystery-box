@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosError } from "axios";
+import axios, { type AxiosInstance, type AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 
@@ -32,10 +32,9 @@ api.interceptors.response.use(
 			router.push("/login");
 		}
 
-		return Promise.reject(
-			new Error(
-				error.response?.data?.error?.message || "An unexpected error occurred",
-			),
-		);
+		const responseData = error?.response?.data as { message?: string; error?: { message?: string } };
+		const errorMessage = responseData?.message ?? responseData?.error?.message ?? "An unexpected error occurred";
+
+		return Promise.reject(new Error(errorMessage));
 	},
 );

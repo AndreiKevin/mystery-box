@@ -69,8 +69,10 @@ async function purchase(box: MysteryBox): Promise<void> {
     try {
         loading.value = true;
         const result = await marketStore.purchaseBox(box.id);
-        resultTreasure.value = result.treasureReceived;
-        showResult.value = true;
+        if (result) {
+            resultTreasure.value = result.treasureReceived;
+            showResult.value = true;
+        }
     } catch (error) {
         $q.notify({
             type: 'negative',

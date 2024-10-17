@@ -1,0 +1,32 @@
+<template>
+    <q-page class="flex flex-center">
+        <q-card class="register-card q-pa-md">
+            <q-card-section>
+                <div class="text-h6">Register</div>
+            </q-card-section>
+
+            <q-card-section>
+                <register-form />
+            </q-card-section>
+        </q-card>
+    </q-page>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import RegisterForm from 'components/auth/RegisterForm.vue';
+
+export default defineComponent({
+    name: 'RegisterPage',
+    components: {
+        RegisterForm,
+    },
+});
+</script>
+
+<style scoped>
+.register-card {
+    width: 100%;
+    max-width: 400px;
+}
+</style>

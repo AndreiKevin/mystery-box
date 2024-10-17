@@ -1,24 +1,34 @@
-export interface User {
-	id: number;
-	username: string;
-	email: string;
-	referralCode: string;
-	credits: number;
-}
+import { z } from 'zod';
 
-export interface LoginCredentials {
-	email: string;
-	password: string;
-}
+export const UserValidator = z.object({
+	id: z.number(),
+	username: z.string(),
+	email: z.string().email(),
+	referralCode: z.string(),
+	credits: z.number(),
+});
 
-export interface RegisterData {
-	username: string;
-	email: string;
-	password: string;
-	referralCode?: string;
-}
+export type User = z.infer<typeof UserValidator>;
 
-export interface AuthState {
-	token: string | null;
-	user: User | null;
-}
+export const LoginCredentialsValidator = z.object({
+	email: z.string().email(),
+	password: z.string(),
+});
+
+export type LoginCredentials = z.infer<typeof LoginCredentialsValidator>;
+
+export const RegisterDataValidator = z.object({
+	username: z.string(),
+	email: z.string().email(),
+	password: z.string(),
+	referralCode: z.string().optional(),
+});
+
+export type RegisterData = z.infer<typeof RegisterDataValidator>;
+
+export const AuthStateValidator = z.object({
+	token: z.string().nullable(),
+	user: UserValidator.nullable(),
+});
+
+export type AuthState = z.infer<typeof AuthStateValidator>;

@@ -21,17 +21,17 @@
     </q-form>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
-import { useStore } from "vuex";
+import { useAuthStore } from "@/stores/auth";
 
 export default defineComponent({
     name: "LoginForm",
 
     setup() {
-        const store = useStore();
+        const authStore = useAuthStore();
         const router = useRouter();
         const $q = useQuasar();
 
@@ -45,12 +45,12 @@ export default defineComponent({
         const handleSubmit = async () => {
             try {
                 loading.value = true;
-                await store.dispatch("auth/login", form.value);
+                await authStore.login(form.value);
                 router.push("/marketplace");
             } catch (error) {
                 $q.notify({
                     type: "negative",
-                    message: error.message || "Login failed",
+                    message: error instanceof Error ? error.message : "Login failed",
                 });
             } finally {
                 loading.value = false;
