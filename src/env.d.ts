@@ -9,8 +9,9 @@ declare namespace NodeJS {
 }
 
 interface ImportMetaEnv {
-	readonly BACKEND_API_URL: string;
-	readonly BACKEND_WS_URL: string;
+	// PREFIXING VITE_ EXPOSES THE ENV VARIABLE TO THE CLIENT-SIDE
+	readonly VITE_BACKEND_API_URL: string;
+	readonly VITE_BACKEND_WS_URL: string;
 }
 
 interface ImportMeta {

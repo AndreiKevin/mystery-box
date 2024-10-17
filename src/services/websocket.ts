@@ -13,7 +13,7 @@ export function useWebSocket() {
 	const authStore = useAuthStore();
 
 	function connect(): void {
-		socket.value = io(import.meta.env.VITE_WS_URL, {
+		socket.value = io(import.meta.env.VITE_BACKEND_WS_URL, {
 			auth: {
 				token: authStore.token,
 			},
