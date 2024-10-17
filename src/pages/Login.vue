@@ -1,20 +1,24 @@
 <template>
-    <q-page class="flex flex-center">
-        <q-card class="login-card q-pa-md">
-            <q-card-section>
-                <div class="text-h6">Login</div>
-            </q-card-section>
+    <q-layout>
+        <q-page-container>
+            <q-page class="flex flex-center">
+                <q-card class="login-card q-pa-md">
+                    <q-card-section>
+                        <div class="text-h6">Login</div>
+                    </q-card-section>
 
-            <q-card-section>
-                <login-form />
-            </q-card-section>
-        </q-card>
-    </q-page>
+                    <q-card-section>
+                        <login-form />
+                    </q-card-section>
+                </q-card>
+            </q-page>
+        </q-page-container>
+    </q-layout>
 </template>
 
 <script lang="ts">
+import LoginForm from '@/components/auth/LoginForm.vue';
 import { defineComponent } from 'vue';
-import LoginForm from 'components/auth/LoginForm.vue';
 
 export default defineComponent({
     name: 'LoginPage',

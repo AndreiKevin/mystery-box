@@ -1,15 +1,19 @@
 <template>
-    <q-page class="flex flex-center">
-        <q-card class="register-card q-pa-md">
-            <q-card-section>
-                <div class="text-h6">Register</div>
-            </q-card-section>
+    <q-layout>
+        <q-page-container>
+            <q-page class="flex flex-center">
+                <q-card class="register-card q-pa-md">
+                    <q-card-section>
+                        <div class="text-h6">Register</div>
+                    </q-card-section>
 
-            <q-card-section>
-                <register-form />
-            </q-card-section>
-        </q-card>
-    </q-page>
+                    <q-card-section>
+                        <register-form />
+                    </q-card-section>
+                </q-card>
+            </q-page>
+        </q-page-container>
+    </q-layout>
 </template>
 
 <script lang="ts">
