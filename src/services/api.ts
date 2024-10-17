@@ -10,6 +10,7 @@ export const api: AxiosInstance = axios.create({
 	},
 });
 
+// before request is sent, add the auth token to the request if it exists
 api.interceptors.request.use(
 	(config) => {
 		const authStore = useAuthStore();
@@ -21,6 +22,8 @@ api.interceptors.request.use(
 	(error) => Promise.reject(error),
 );
 
+// before response is returned, check if the response is a 401
+// if so, logout and redirect to login
 api.interceptors.response.use(
 	(response) => response.data,
 	(error: AxiosError) => {
