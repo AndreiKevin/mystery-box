@@ -4,7 +4,7 @@ export const UserValidator = z.object({
 	id: z.number(),
 	username: z.string(),
 	email: z.string().email(),
-	referralCode: z.string(),
+	referralCode: z.string().optional(),
 	credits: z.number(),
 });
 
