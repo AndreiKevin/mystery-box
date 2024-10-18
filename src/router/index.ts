@@ -28,7 +28,7 @@ export default route(() => {
 
 		if (to.meta.requiresAuth && !isAuthenticated) {
 			next('/login');
-		} else if (isAuthenticated) {
+		} else if (to.meta.guest && isAuthenticated) {
 			next('/marketplace');
 		} else {
 			next();
