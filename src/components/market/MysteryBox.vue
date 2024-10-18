@@ -1,7 +1,7 @@
 <template>
     <div class="mystery-boxes">
         <div v-for="box in mysteryBoxes" :key="box.id" class="mystery-box">
-            <q-card class="my-card cursor-pointer" @click="purchase(box)">
+            <q-card class="my-card cursor-pointer" @click="openPurchaseModal(box)">
                 <q-img :src="box.imageUrl" :ratio="1" class="mystery-box-image" />
 
                 <q-card-section>
@@ -10,8 +10,8 @@
                 </q-card-section>
 
                 <q-card-actions align="center">
-                    <q-btn color="primary" label="Purchase" :loading="loading" :disabled="!canPurchase(box)"
-                        @click.stop="purchase(box)" />
+                    <q-btn color="primary" label="Purchase" :disabled="!canPurchase(box)"
+                        @click.stop="openPurchaseModal(box)" />
                 </q-card-actions>
             </q-card>
         </div>
@@ -31,6 +31,7 @@
                 </q-card-actions>
             </q-card>
         </q-dialog>
+        <purchase-modal v-model="showPurchaseModal" :selected-box="selectedBox" @purchase="purchase" />
     </div>
 </template>
 
@@ -40,6 +41,7 @@ import { useQuasar } from 'quasar';
 import { useMarketStore } from '@/stores/market';
 import { useAuthStore } from '@/stores/auth';
 import type { Treasure, MysteryBox } from '@/types/market';
+import PurchaseModal from './PurchaseModal.vue';
 
 const $q = useQuasar();
 const marketStore = useMarketStore();
@@ -48,6 +50,8 @@ const authStore = useAuthStore();
 const loading = ref(false);
 const showResult = ref(false);
 const resultTreasure = ref<Treasure | null>(null);
+const showPurchaseModal = ref(false);
+const selectedBox = ref<MysteryBox | null>(null);
 
 // make sure to track if more mystery boxes (this can happen if Marketplace.vue refetches api)
 const mysteryBoxes = computed(() => marketStore.mysteryBoxes);
@@ -57,6 +61,10 @@ const canPurchase = (box: MysteryBox) => authStore.userCredits >= box.price;
 onMounted(async () => {
     await marketStore.fetchMysteryBoxes();
 });
+function openPurchaseModal(box: MysteryBox) {
+    selectedBox.value = box;
+    showPurchaseModal.value = true;
+}
 
 async function purchase(box: MysteryBox): Promise<void> {
     if (!canPurchase(box)) {
@@ -69,10 +77,15 @@ async function purchase(box: MysteryBox): Promise<void> {
 
     try {
         loading.value = true;
-        const result = await marketStore.purchaseBox(box.id);
+        //const result = await marketStore.purchaseBox(box.id);
+        const result = await marketStore.purchaseDummyBox(box.id);
         if (result) {
             resultTreasure.value = result.treasureReceived;
             showResult.value = true;
+            $q.notify({
+                type: 'positive',
+                message: `You received: ${result.treasureReceived.name}`
+            });
         }
     } catch (error) {
         $q.notify({
