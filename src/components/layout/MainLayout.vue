@@ -38,12 +38,12 @@
                     <q-item-section>Marketplace</q-item-section>
                 </q-item>
 
-                <q-item clickable v-ripple to="/inventory">
+                <!-- <q-item clickable v-ripple to="/inventory">
                     <q-item-section avatar>
                         <q-icon name="inventory_2" />
                     </q-item-section>
                     <q-item-section>My Inventory</q-item-section>
-                </q-item>
+                </q-item> -->
             </q-list>
         </q-drawer>
 
