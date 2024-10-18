@@ -1,8 +1,8 @@
 <template>
     <q-layout>
         <q-page-container>
-            <q-page class="flex flex-center">
-                <q-card class="login-card q-pa-md">
+            <q-page class="column flex flex-center">
+                <q-card class="login-card q-pa-md q-mb-md">
                     <q-card-section>
                         <div class="text-h6">Login</div>
                     </q-card-section>
@@ -11,10 +11,10 @@
                         <login-form />
                     </q-card-section>
                 </q-card>
+                <router-link to="/poloniex-feed" class="btn btn-secondary">
+                    View Poloniex Live Trades
+                </router-link>
             </q-page>
-            <router-link to="/poloniex-feed" class="btn btn-secondary">
-                View Poloniex Live Trades
-            </router-link>
         </q-page-container>
     </q-layout>
 </template>
