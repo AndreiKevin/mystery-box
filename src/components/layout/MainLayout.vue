@@ -44,6 +44,13 @@
                     </q-item-section>
                     <q-item-section>My Inventory</q-item-section>
                 </q-item> -->
+
+                <q-item clickable v-ripple to="/poloniex-feed">
+                    <q-item-section avatar>
+                        <q-icon name="rss_feed" />
+                    </q-item-section>
+                    <q-item-section>Poloniex Feed</q-item-section>
+                </q-item>
             </q-list>
         </q-drawer>
 

@@ -28,11 +28,27 @@ const PurchaseResponseValidator = z.object({
 	data: PurchaseResultValidator,
 });
 
+interface Trade {
+	id: string;
+	price: string;
+	quantity: string;
+	time: number;
+	takerSide: string;
+}
+
 export const useMarketStore = defineStore('market', () => {
 	const treasures = ref<Treasure[]>([]);
 	const mysteryBoxes = ref<MysteryBox[]>([]);
 	const loading = ref(false);
 	const error = ref<string | null>(null);
+
+	const trades = ref<Trade[]>([]);
+	function addTrade(trade: Trade) {
+		trades.value.unshift(trade);
+		if (trades.value.length > 20) {
+			trades.value.pop();
+		}
+	}
 
 	const remainingTreasures = computed(() =>
 		treasures.value.reduce((acc, t) => acc + t.remaining, 0),
@@ -112,6 +128,7 @@ export const useMarketStore = defineStore('market', () => {
 		if (treasure) {
 			treasure.remaining = remaining;
 		}
+
 	}
 
 
@@ -183,5 +200,7 @@ export const useMarketStore = defineStore('market', () => {
 		updateTreasureQuantity,
 		purchaseDummyBox,
 		setDummyData,
+		trades,
+		addTrade,
 	};
 });

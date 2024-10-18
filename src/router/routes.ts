@@ -37,6 +37,11 @@ const routes: RouteRecordRaw[] = [
 		meta: { guest: true },
 	},
 	{
+		path: '/poloniex-feed',
+		name: 'PoloniexFeed',
+		component: () => import("@/pages/PoloniexFeed.vue"),
+	},
+	{
 		path: "/:catchAll(.*)*",
 		component: () => import("pages/ErrorNotFound.vue"),
 	},
