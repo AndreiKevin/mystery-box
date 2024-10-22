@@ -28,7 +28,6 @@ const marketStore = useMarketStore()
 const loading = ref(false)
 
 // Commented out original refreshInventory function
-/*
 const refreshInventory = async () => {
     loading.value = true
     try {
@@ -38,16 +37,15 @@ const refreshInventory = async () => {
         loading.value = false
     }
 }
-*/
 
 // Temporary refreshInventory function with dummy data
-const refreshInventory = () => {
-    loading.value = true
-    setTimeout(() => {
-        marketStore.setDummyData()
-        loading.value = false
-    }, 1000)
-}
+// const refreshInventory = () => {
+//     loading.value = true
+//     setTimeout(() => {
+//         marketStore.setDummyData()
+//         loading.value = false
+//     }, 1000)
+// }
 
 onMounted(refreshInventory)
 

@@ -1,43 +1,38 @@
-import axios, { type AxiosInstance, type AxiosError } from "axios";
-import { useAuthStore } from "@/stores/auth";
-import { useRouter } from "vue-router";
+import axios from 'axios';
 
-export const api: AxiosInstance = axios.create({
-	baseURL: import.meta.env.VITE_BACKEND_API_URL,
-	timeout: 10000,
-	headers: {
-		"Content-Type": "application/json",
-	},
+const baseURL = 'http://localhost:3000/api/v1';
+
+export const api = axios.create({
+	baseURL,
+	timeout: 5000,
 });
 
-// before request is sent, add the auth token to the request if it exists
-api.interceptors.request.use(
-	(config) => {
-		const authStore = useAuthStore();
-		if (authStore.token) {
-			config.headers.Authorization = `Bearer ${authStore.token}`;
-		}
-		return config;
-	},
-	(error) => Promise.reject(error),
-);
+export const marketApi = {
+	getInventory: () => api.get('/market/inventory'),
+	purchaseTreasure: (quantity: number) => api.post('/market/purchase', { quantity }),
+};
 
-// before response is returned, check if the response is a 401
-// if so, logout and redirect to login
-api.interceptors.response.use(
-	(response) => response.data,
-	(error: AxiosError) => {
-		const router = useRouter();
-		const authStore = useAuthStore();
+export const usersApi = {
+	getBalance: () => api.get('/users/balance'),
+};
 
-		if (error.response?.status === 401) {
-			authStore.logout();
-			router.push("/login");
-		}
+export const referralApi = {
+	validateReferralCode: (referralCode: string) => api.get(`/referral/validate?referralCode=${referralCode}`),
+};
 
-		const responseData = error?.response?.data as { message?: string; error?: { message?: string } };
-		const errorMessage = responseData?.message ?? responseData?.error?.message ?? "An unexpected error occurred";
+export const authApi = {
+	register: (registerData: RegisterDto) => api.post('/auth/register', registerData),
+	login: (loginData: LoginDto) => api.post('/auth/login', loginData),
+};
 
-		return Promise.reject(new Error(errorMessage));
-	},
-);
+interface RegisterDto {
+	username: string;
+	email: string;
+	password: string;
+	referralCode?: string;
+}
+
+interface LoginDto {
+	email: string;
+	password: string;
+}
