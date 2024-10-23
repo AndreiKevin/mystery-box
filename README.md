@@ -1,12 +1,27 @@
-# mystery-box (mystery-box)
+# Mystery Box (mystery-box)
 
-zktech.solutions project
+A zktech.solutions project
 
-## Install the dependencies
+## Prerequisites
+
+- Node.js (v14 or later recommended)
+- npm or yarn
+
+## Installation
+
+Install the dependencies:
+
 ```bash
 yarn
 # or
 npm install
+```
+
+### Run the tests
+```bash
+yarn test
+# or
+npm run test:unit
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
