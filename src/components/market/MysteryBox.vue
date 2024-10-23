@@ -2,7 +2,7 @@
     <div class="mystery-boxes">
         <div v-for="box in mysteryBoxes" :key="box.id" class="mystery-box">
             <q-card class="my-card cursor-pointer" @click="openPurchaseModal(box)">
-                <q-img :src="box.imageUrl" :ratio="1" class="mystery-box-image" />
+                <q-img :src="box.image_url" :ratio="1" class="mystery-box-image" />
 
                 <q-card-section>
                     <div class="text-h6">{{ box.name }}</div>
@@ -20,7 +20,7 @@
             <q-card class="result-card">
                 <q-card-section class="column items-center">
                     <div class="text-h6">Your Treasure!</div>
-                    <q-img v-if="resultTreasure" :src="resultTreasure.imageUrl" :ratio="1"
+                    <q-img v-if="resultTreasure" :src="resultTreasure.image_url" :ratio="1"
                         class="treasure-image q-mt-md" />
                     <div v-if="resultTreasure" class="text-h5 q-mt-md">{{ resultTreasure.name }}</div>
                     <div v-if="resultTreasure" class="text-subtitle2">{{ resultTreasure.description }}</div>

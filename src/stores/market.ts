@@ -31,7 +31,7 @@ export const useMarketStore = defineStore('market', () => {
 	}
 
 	const remainingTreasures = computed(() =>
-		treasures.value.reduce((acc, t) => acc + t.remaining, 0),
+		treasures.value.reduce((acc, t) => acc + t.remaining_quantity, 0),
 	);
 
 	function getTreasureById(id: number): Treasure | undefined {
@@ -41,7 +41,8 @@ export const useMarketStore = defineStore('market', () => {
 	async function fetchInventory(): Promise<void> {
 		try {
 			loading.value = true;
-			treasures.value = await marketApi.getInventory();
+			const result = await marketApi.getInventory();
+			treasures.value = result.data.treasures;
 		} catch (err) {
 			error.value = err instanceof Error ? err.message : 'Unknown error occurred';
 			throw err;
@@ -66,19 +67,24 @@ export const useMarketStore = defineStore('market', () => {
 		const authStore = useAuthStore();
 
 		try {
-			const result = await marketApi.purchaseBox(boxId);
-			authStore.updateCredits(result.remainingCredits);
-			return result;
+			const result = await marketApi.purchaseBox(authStore.user?.userId as number, boxId);
+			console.log('result: ', result);
+			if (result.success && result.data) {
+				authStore.updateCredits(result.data.data.remainingCredits);
+				return result.data.data as PurchaseResult;
+			}
+			
+			throw new Error(result.error);
 		} catch (err) {
 			error.value = err instanceof Error ? err.message : 'Unknown error occurred';
-			throw err;
+			throw err; // propagate the error up to display the error message in the popup UI
 		}
 	}
 
 	function updateTreasureQuantity(treasureId: number, remaining: number): void {
 		const treasure = treasures.value.find((t) => t.id === treasureId);
 		if (treasure) {
-			treasure.remaining = remaining;
+			treasure.remaining_quantity = remaining;
 		}
 
 	}

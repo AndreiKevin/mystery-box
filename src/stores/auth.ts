@@ -6,7 +6,7 @@ import type {
 	RegisterData,
 	AuthState,
 } from "@/types/auth";
-import { api, authApi } from "@/services/api";
+import { authApi } from "@/services/api";
 import { useWebSocket } from "@/services/websocket";
 import { AxiosError } from 'axios';
 import { useRouter } from 'vue-router';
@@ -66,7 +66,7 @@ export const useAuthStore = defineStore("auth", () => {
 
 	function updateCredits(amount: number): void {
 		if (user.value) {
-			user.value.credits += amount;
+			user.value.credits = amount;
 			localStorage.setItem("user", JSON.stringify(user.value));
 		}
 	}

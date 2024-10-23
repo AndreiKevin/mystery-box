@@ -3,17 +3,17 @@
         <div class="row q-col-gutter-md">
             <div v-for="treasure in treasures" :key="treasure.id" class="col-xs-12 col-sm-6 col-md-3">
                 <q-card class="treasure-card">
-                    <q-img :src="treasure.imageUrl" :ratio="1" />
+                    <q-img :src="treasure.image_url" :ratio="1" />
 
                     <q-card-section>
                         <div class="text-h6">{{ treasure.name }}</div>
                         <div class="text-subtitle2">
-                            Remaining: {{ treasure.remaining }}/{{ treasure.total }}
+                            Remaining: {{ treasure.remaining_quantity }}/{{ treasure.initial_quantity }}
                         </div>
                     </q-card-section>
 
-                    <q-linear-progress :value="treasure.remaining / treasure.total" class="q-mt-sm"
-                        :color="getProgressColor(treasure.remaining / treasure.total)" />
+                    <q-linear-progress :value="treasure.remaining_quantity / treasure.initial_quantity" class="q-mt-sm"
+                        :color="getProgressColor(treasure.remaining_quantity / treasure.initial_quantity)" />
                 </q-card>
             </div>
         </div>

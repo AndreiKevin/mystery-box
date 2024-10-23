@@ -2,29 +2,29 @@ import { z } from 'zod';
 
 export const TreasureValidator = z.object({
 	id: z.number(),
-	type: z.string(),
-	name: z.string(),
+	created_at: z.string(),
 	description: z.string(),
-	remaining: z.number(),
-	total: z.number(),
-	imageUrl: z.string().url(),
+	name: z.string(),
+	image_url: z.string().url(),
+	initial_quantity: z.number(),
+	remaining_quantity: z.number(),
 });
 
 export type Treasure = z.infer<typeof TreasureValidator>;
 
 export const MysteryBoxValidator = z.object({
+	created_at: z.string(),
 	id: z.number(),
+	image_url: z.string().url(),
 	name: z.string(),
 	price: z.number(),
-	imageUrl: z.string().url(),
 });
 
 export type MysteryBox = z.infer<typeof MysteryBoxValidator>;
 
 export const PurchaseResultValidator = z.object({
-	purchaseId: z.number(),
 	treasureReceived: TreasureValidator,
-	remainingCredits: z.number(),
+	remainingCredits: z.coerce.number(),
 });
 
 export type PurchaseResult = z.infer<typeof PurchaseResultValidator>;

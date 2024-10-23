@@ -32,7 +32,7 @@ api.interceptors.request.use(
 // if so, logout and redirect to login
 api.interceptors.response.use(
 	(response) => {
-		console.log('MY LOG: RESPONSE', response);
+		console.log('RESPONSE:', response);
 		return response;
 	},
 	(error: AxiosError) => {
@@ -51,34 +51,46 @@ api.interceptors.response.use(
 	},
 );
 
+const BaseResponseValidator = z.object({
+	success: z.boolean(),
+});
+
 const InventoryResponseValidator = z.object({
 	data: z.object({
 		treasures: z.array(TreasureValidator),
 	}),
-});
+}).merge(BaseResponseValidator);
 
 const MysteryBoxesResponseValidator = z.object({
 	data: z.object({
 		mysteryBoxes: z.array(MysteryBoxValidator),
 	}),
-});
+}).merge(BaseResponseValidator);
 
 const PurchaseResponseValidator = z.object({
 	data: PurchaseResultValidator,
-});
+}).merge(BaseResponseValidator);
+
+const BalanceResponseValidator = z.object({
+	data: z.object({
+		balance: z.number(),
+	}),
+}).merge(BaseResponseValidator);
+
+const ReferralResponseValidator = z.object({
+	data: z.object({
+		valid: z.boolean(),
+	}),
+}).merge(BaseResponseValidator);
 
 export const marketApi = {
 	getInventory: async () => {
 		try {
 			const response = await api.get('/api/v1/market/inventory');
-			const parsedData = JSON.parse(response.data);
-			if (!parsedData.success) {
-				throw new Error('Failed to fetch inventory');
-			}
-			const result = InventoryResponseValidator.safeParse(parsedData.data);
+			const result = InventoryResponseValidator.safeParse(response.data);
 
 			if (result.success) {
-				return result.data.data.treasures;
+				return result.data;
 			}
 			
 			console.error('Invalid inventory data:', result.error);
@@ -91,12 +103,7 @@ export const marketApi = {
 	getMysteryBoxes: async () => {
 		try {
 			const response = await api.get('/api/v1/market/mystery-boxes');
-			const parsedData = JSON.parse(response.data);
-			if (!parsedData.success) {
-				throw new Error('Failed to fetch mystery boxes');
-			}
-
-			const result = MysteryBoxesResponseValidator.safeParse(parsedData.data);
+			const result = MysteryBoxesResponseValidator.safeParse(response.data);
 
 			if (result.success) {
 				return result.data.data.mysteryBoxes;
@@ -109,25 +116,18 @@ export const marketApi = {
 		}
 	},
 
-	purchaseBox: async (boxId: number) => {
+	purchaseBox: async (userId: number, mysteryBoxId: number) => {
 		try {
 			const response = await api.post('/api/v1/market/purchase', {
-				boxId,
-				quantity: 1,
+				userId,
+				mysteryBoxId,
 			});
-			const parsedData = JSON.parse(response.data);
-			if (!parsedData.success) {
-				throw new Error('Failed to purchase box');
+
+			if (!response.data.success) {
+				return response.data;
 			}
-
-			const result = PurchaseResponseValidator.safeParse(parsedData.data);
-
-			if (result.success) {
-				return result.data.data;
-			}
-
-			console.error('Invalid purchase data:', result.error);
-			throw new Error('Invalid purchase data received');
+			
+			return PurchaseResponseValidator.safeParse(response.data);
 		} catch (err) {
 			throw err instanceof Error ? err : new Error('Unknown error occurred');
 		}
@@ -137,22 +137,26 @@ export const marketApi = {
 export const usersApi = {
 	getBalance: async () => {
 		const response = await api.get('/api/v1/users/balance');
-		const parsedData = JSON.parse(response.data);
-		if (!parsedData.success) {
-			throw new Error('Failed to fetch balance');
+		const result = BalanceResponseValidator.safeParse(response.data);
+
+		if (result.success) {
+			return result.data.data;
 		}
-		return parsedData.data;
+
+		throw new Error('Invalid balance data received');
 	},
 };
 
 export const referralApi = {
 	validateReferralCode: async (referralCode: string) => {
 		const response = await api.get(`/api/v1/referral/validate?referralCode=${referralCode}`);
-		const parsedData = JSON.parse(response.data);
-		if (!parsedData.success) {
-			throw new Error('Failed to validate referral code');
+		const result = ReferralResponseValidator.safeParse(response.data);
+
+		if (result.success) {
+			return result.data.data;
 		}
-		return parsedData.data;
+
+		throw new Error('Invalid referral code received');
 	},
 };
 
