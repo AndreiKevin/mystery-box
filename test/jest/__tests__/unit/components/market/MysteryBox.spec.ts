@@ -1,9 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { createTestingPinia } from '@quasar/quasar-app-extension-testing-unit-jest';
 import { Quasar } from 'quasar';
-import MysteryBox from '../MysteryBox.vue';
-import { useMarketStore } from '@/stores/market';
-import { useAuthStore } from '@/stores/auth';
+import MysteryBox from '@/components/market/MysteryBox.vue';
 import { dummyMysteryBoxes } from '@/test/dummyData';
 
 describe('MysteryBox', () => {

@@ -12,6 +12,9 @@ export default {
   //      statements: 50
   //   },
   // },
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1'
+  },
   transform: {
     [`^(${quasarEsModulesPackageNames}).+\\.js$`]: 'babel-jest',
     '^.+\\.(ts|js|html)$': [

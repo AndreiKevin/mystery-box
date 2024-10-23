@@ -1,8 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createTestingPinia } from '@quasar/quasar-app-extension-testing-unit-jest';
 import { Quasar } from 'quasar';
-import TreasureGrid from '../TreasureGrid.vue';
-import { useMarketStore } from '@/stores/market';
+import TreasureGrid from '@/components/market/TreasureGrid.vue';
 import { dummyTreasures } from '@/test/dummyData';
 
 describe('TreasureGrid', () => {
